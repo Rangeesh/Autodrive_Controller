@@ -1,0 +1,42 @@
+<launch>
+  <!-- ROSCORE -->
+  <master auto="start"/>
+
+  <!-- Autonomous Enable Button -->
+  <node pkg="auto_enable_button" type="controller.py" name="auto_enable_button" output="screen" />
+
+  <!-- CAN Bus -->
+  <!--<include file="$(find can_bus)/launch/can_bus.launch" />-->
+
+  <!-- GPS -->
+  <include file="$(find novatel_span_driver)/launch/novatel_gps.launch" />
+  <node pkg="bolt" type="gps_converter.py" name="gps_converter" output="screen" />
+  <node pkg="topic_tools" type="relay" name="topic_tools_relay" args="/navsat/odom /odom" />
+
+  <!-- Visual Helpers -->
+  <node pkg="bolt" type="sphere_waypoint_visuals.py" name="waypoint_visuals_node" />
+
+  <!-- LiDARs -->
+  <include file="$(find bolt)/launch/lidar_for_calibration.launch" />
+
+  <!-- RViz -->
+  <node pkg="rviz" type="rviz" name="rviz_visual" output="screen" args="-d /home/autodrive/Desktop/catkin_ws/src/bolt/cfg/Visuals.rviz" />
+
+  <!-- Waypoint Planning -->
+  <!--<node pkg="waypoint_planning" type="planner.py" name="waypoint_planning" output="screen" />-->
+
+  <!-- Vehicle Controller -->
+  <!--<node pkg="rqt_reconfigure" type="rqt_reconfigure" name="controller_configure" />-->
+  <!--<node pkg="combined_controller" type="combined_controller_node" name="combined_controller" />-->
+  <!--<node pkg="combined_controller" type="velocity_node" name="velocity_node" output="screen"/>-->
+
+  <!-- Lane Detection -->
+  <node pkg="lane_detection_old" type="ros_node.py" name="lane_detection_old" output="screen" />
+  <node pkg="lane_detection_old" type="ros_node_horizontal.py" name="horizontal_detection" output="screen"/>
+
+  <!-- Obstable Detection -->
+  <!--<node pkg="obstacle_detection" type="obstacle_detection" name="obstacle_detection" output="screen"/>-->
+
+  <!-- Sign Detection -->
+  <!-- <node pkg="stop_signs" type="main" name="sign_detection" /> -->
+</launch>

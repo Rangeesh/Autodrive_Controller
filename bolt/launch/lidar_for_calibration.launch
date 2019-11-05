@@ -1,0 +1,12 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <!-- Arguments -->
+  <arg name="mode" default="all"/>
+
+  <!-- For transforms, x is positive forward of car, y is positive right of car, z is positive upward -->
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_right" args="0.54 -0.52705 1.26365 0.190809 0 0 0.9816272 base_link lidar_right 10" />
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_center" args="0 0 1.5748 0 0 0 1 base_link lidar_center 10" />
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_left" args="0.54 0.51705 1.2635 0 0 0 1 base_link lidar_left 10" />
+ 
+
+</launch>

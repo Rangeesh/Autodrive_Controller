@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rosbag" type="play" name="rosbag" required="true" args="/home/autodrive/2019-05-08-11-24-06.bag"/>
+  <node name="extract" pkg="image_view" type="extract_images" respawn="false" required="true" output="screen" cwd="ROS_HOME">
+    <remap from="image" to="/front_camera/image_color"/>
+  </node>
+</launch>

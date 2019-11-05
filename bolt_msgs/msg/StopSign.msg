@@ -1,0 +1,2 @@
+bool enabled
+float32 distance

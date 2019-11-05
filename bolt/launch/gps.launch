@@ -1,0 +1,8 @@
+
+
+<launch>
+  <!-- ROSCORE -->
+  <master auto="start"/><include file="$(find novatel_span_driver)/launch/novatel_gps.launch" />
+  <node pkg="bolt" type="gps_converter.py" name="gps_converter" output="screen" />
+  <node pkg="topic_tools" type="relay" name="topic_tools_relay" args="/navsat/odom /odom" />
+</launch>

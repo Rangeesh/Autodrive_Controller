@@ -1,0 +1,130 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <!-- Arguments -->
+  <arg name="mode" default="all"/>
+
+  <!-- For transforms, x is positive forward of car, y is positive right of car, z is positive upward -->
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_right" args="0.54 -0.52705 1.26365 0.190809 0 0 0.9816272 base_link lidar_right 10" />
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_center" args="0 0 1.5748 0 0 0 1 base_link lidar_center 10" />
+  <node pkg="tf" type="static_transform_publisher" name="velodyne_tf_broadcaster_left" args="0.54 0.51705 1.2635 0 0 0 1 base_link lidar_left 10" />
+
+
+
+  <!-- For VLP-32C Center LiDAR -->
+  <group if="$(eval arg('mode')=='center' or arg('mode')=='all')" ns="lidar_center">
+    <!-- declare arguments with default values -->
+    <arg name="calibration" default="$(find velodyne_pointcloud)/params/VeloView-VLP-32C.yaml"/>
+    <arg name="device_ip" default="192.168.1.201" />
+    <arg name="frame_id" default="lidar_center" />
+    <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+    <arg name="max_range" default="130.0" />
+    <arg name="min_range" default="0.4" />
+    <arg name="pcap" default="" />
+    <arg name="port" default="2368" />
+    <arg name="read_fast" default="false" />
+    <arg name="read_once" default="false" />
+    <arg name="repeat_delay" default="0.0" />
+    <arg name="rpm" default="600.0" />
+
+    <!-- start nodelet manager and driver nodelets -->
+    <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+      <arg name="device_ip" value="$(arg device_ip)"/>
+      <arg name="frame_id" value="$(arg frame_id)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="model" value="32C"/>
+      <arg name="pcap" value="$(arg pcap)"/>
+      <arg name="port" value="$(arg port)"/>
+      <arg name="read_fast" value="$(arg read_fast)"/>
+      <arg name="read_once" value="$(arg read_once)"/>
+      <arg name="repeat_delay" value="$(arg repeat_delay)"/>
+      <arg name="rpm" value="$(arg rpm)"/>
+    </include>
+
+    <!-- start cloud nodelet -->
+    <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+      <arg name="calibration" value="$(arg calibration)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="max_range" value="$(arg max_range)"/>
+      <arg name="min_range" value="$(arg min_range)"/>
+    </include>
+  </group>
+
+  <!-- For VLP-16 Left LiDAR -->
+  <group if="$(eval arg('mode')=='left' or arg('mode')=='all')" ns="lidar_left">
+    <!-- declare arguments with default values -->
+    <arg name="calibration" default="$(find velodyne_pointcloud)/params/VLP16_hires_db.yaml"/>
+    <arg name="device_ip" default="192.168.1.202" />
+    <arg name="frame_id" default="lidar_left" />
+    <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+    <arg name="max_range" default="130.0" />
+    <arg name="min_range" default="0.4" />
+    <arg name="pcap" default="" />
+    <arg name="port" default="2369" />
+    <arg name="read_fast" default="false" />
+    <arg name="read_once" default="false" />
+    <arg name="repeat_delay" default="0.0" />
+    <arg name="rpm" default="600.0" />
+
+    <!-- start nodelet manager and driver nodelets -->
+    <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+      <arg name="device_ip" value="$(arg device_ip)"/>
+      <arg name="frame_id" value="$(arg frame_id)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="model" value="VLP16"/>
+      <arg name="pcap" value="$(arg pcap)"/>
+      <arg name="port" value="$(arg port)"/>
+      <arg name="read_fast" value="$(arg read_fast)"/>
+      <arg name="read_once" value="$(arg read_once)"/>
+      <arg name="repeat_delay" value="$(arg repeat_delay)"/>
+      <arg name="rpm" value="$(arg rpm)"/>
+    </include>
+
+    <!-- start cloud nodelet -->
+    <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+      <arg name="calibration" value="$(arg calibration)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="max_range" value="$(arg max_range)"/>
+      <arg name="min_range" value="$(arg min_range)"/>
+    </include>
+  </group>
+
+  <!-- For VLP-16 Right LiDAR -->
+  <group if="$(eval arg('mode')=='right' or arg('mode')=='all')" ns="lidar_right">
+    <!-- declare arguments with default values -->
+    <arg name="calibration" default="$(find velodyne_pointcloud)/params/VLP16_hires_db.yaml"/>
+    <arg name="device_ip" default="192.168.1.203" />
+    <arg name="frame_id" default="lidar_right" />
+    <arg name="manager" default="$(arg frame_id)_nodelet_manager" />
+    <arg name="max_range" default="130.0" />
+    <arg name="min_range" default="0.4" />
+    <arg name="pcap" default="" />
+    <arg name="port" default="2370" />
+    <arg name="read_fast" default="false" />
+    <arg name="read_once" default="false" />
+    <arg name="repeat_delay" default="0.0" />
+    <arg name="rpm" default="600.0" />
+
+    <!-- start nodelet manager and driver nodelets -->
+    <include file="$(find velodyne_driver)/launch/nodelet_manager.launch">
+      <arg name="device_ip" value="$(arg device_ip)"/>
+      <arg name="frame_id" value="$(arg frame_id)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="model" value="VLP16"/>
+      <arg name="pcap" value="$(arg pcap)"/>
+      <arg name="port" value="$(arg port)"/>
+      <arg name="read_fast" value="$(arg read_fast)"/>
+      <arg name="read_once" value="$(arg read_once)"/>
+      <arg name="repeat_delay" value="$(arg repeat_delay)"/>
+      <arg name="rpm" value="$(arg rpm)"/>
+    </include>
+
+    <!-- start cloud nodelet -->
+    <include file="$(find velodyne_pointcloud)/launch/cloud_nodelet.launch">
+      <arg name="calibration" value="$(arg calibration)"/>
+      <arg name="manager" value="$(arg manager)" />
+      <arg name="max_range" value="$(arg max_range)"/>
+      <arg name="min_range" value="$(arg min_range)"/>
+    </include>
+  </group>
+
+</launch>
